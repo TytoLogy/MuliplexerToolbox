@@ -1,0 +1,106 @@
+Using the GS3
+
+Basics:
+
+D/A channels are 01, 02, 03, ..., 24 and correspond to TDT analog output channels 1-24.
+
+Each of the channels maps to 6 speakers, 1-6.
+
+
+Serial Port Settings:
+
+On nacurutu, the USB->serial device adapter to communicate with the GS3 is on COM5
+
+The settings on the serial device should be:
+
+9600 bits/second
+8 data bits
+N no parity
+1 stop bit
+N no flow control
+
+Commands:
+
+The following commands will be read without hitting <ENTER> (i.e., without a CR/LF):
+
+97<packet>	Sends a packet-based command to configure the switches (see below for details)
+
+98	clear all, sets all switches off
+
+99	prints connections as follows:
+
+XX - yyyyyy
+
+where
+	XX		=	channel number (01, 02, ..., 24)
+	yyyyyy	=	speaker map, 0 indicates off, 1 indicates on.  Speaker assignments are displayed
+				as 654321
+
+example:  
+
+if channel 05 is mapped to speaker 5, then the output line from the GS3 will be
+
+.
+.
+.
+05 - 010000
+.
+.
+.
+
+For all 24 speakers, the output looks like:
+
+9901 - 000000             
+02 - 000001           
+03 - 000000           
+04 - 000000           
+05 - 000000           
+06 - 000000           
+07 - 000000           
+08 - 000000           
+09 - 000000           
+10 - 000000           
+11 - 000000           
+12 - 000000           
+13 - 000000           
+14 - 000000           
+15 - 000000           
+16 - 000000           
+17 - 000000           
+18 - 000000           
+19 - 000000           
+20 - 000000           
+21 - 000000           
+22 - 000000           
+23 - 000000           
+24 - 000000           
+
+note that the 99 is echoed in hyperterminal - this will not be so in any MATLAP scripts.
+
+For a single channel, a speaker may be activated by issuing the command:
+
+XXy<ENTER>
+
+where XX = channel number and y = speaker.
+
+So, for channel 5, speaker 5, you would issue the command:
+
+055<ENTER>
+
+To turn that speaker off:
+
+050<ENTER>
+
+
+
+Packet notation:
+
+The entire map may be altered using the packet form:
+
+97<packet>
+
+A packet to turn on channel 1, speaker 6:
+
+060000000000000000000000000000000000000000000000
+
+ 
